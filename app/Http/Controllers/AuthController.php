@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
-class AuthController extends Controller
+class AuthController extends ApiController
 {
     /**
      * Create a new AuthController instance.
@@ -107,6 +107,9 @@ class AuthController extends Controller
         return $this->respondWithToken(auth()->refresh());
     }
 
+     public function index(){
+        return $this->successResponse('User Fetch Successfully', User::all());
+     }
     /**
      * Get the token array structure.
      *

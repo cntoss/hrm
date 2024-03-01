@@ -14,7 +14,7 @@ class ApiController extends Controller
      * @param  int  $statusCode
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function successResponse($message, $data = null, $statusCode = 200)
+    protected function successResponse($message = 'Success', $data = null, $statusCode = 200)
     {
         $response = [
             'success' => true,

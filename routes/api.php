@@ -13,6 +13,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\UserRoleController;
 
 Route::group([
     'middleware' => 'api',
@@ -23,9 +24,11 @@ Route::group([
     Route::post('logout', [AuthController::class, 'logout']);
     Route::post('refresh', [AuthController::class, 'refresh']);
     Route::post('me', [AuthController::class, 'me']);
+    Route::get('users', [AuthController::class, 'index']);
 });
 
-Route::middleware('auth:api')->group(function () {
+Route::middleware(['auth:api','assign.roles' ])->group(
+    function () {
     Route::get('/employees', [EmployeeController::class, 'index']);
     Route::post('/employees', [EmployeeController::class, 'store']);
     Route::get('/employees/{id}', [EmployeeController::class, 'show']);
@@ -33,12 +36,9 @@ Route::middleware('auth:api')->group(function () {
     Route::delete('/employees/{id}', [EmployeeController::class, 'destroy']);
 });
 
-// Route::group([
-//     'middleware' => 'api',
-// ], function ($router) {
-//     Route::get('/employees', [EmployeeController::class, 'index']);
-//     Route::post('/employees', [EmployeeController::class, 'store']);
-//     Route::get('/employees/{id}', [EmployeeController::class, 'show']);
-//     Route::put('/employees/{id}', [EmployeeController::class, 'update']);
-//     Route::delete('/employees/{id}', [EmployeeController::class, 'destroy']);
-// });
+Route::group(
+    ['prefix'=>'role',  'middleware' => 'api',], function () {
+    Route::get('/role', [UserRoleController::class, 'getRoles']);
+    Route::post('/assignRole', [UserRoleController::class, 'assignRole']);
+    Route::get('/permission', [UserRoleController::class, 'getPermissions']);
+   });

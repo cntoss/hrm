@@ -6,10 +6,13 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Traits\HasRoles;
+
 
 class User extends Authenticatable implements JWTSubject
 {
     use Notifiable;
+    use HasRoles; 
 
     protected $fillable = ['name', 'email', 'password'];
     protected $hidden = [ 'password', 'remember_token' ];
