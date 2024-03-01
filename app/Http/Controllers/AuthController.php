@@ -5,6 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 
+use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 class AuthController extends Controller
 {
     /**
@@ -15,7 +20,7 @@ class AuthController extends Controller
     public function __construct()
     {
         # By default we are using here auth:api middleware
-        $this->middleware('auth:api', ['except' => ['login']]);
+        $this->middleware('auth:api', ['except' => ['login', 'register']]);
     }
 
     /**
@@ -33,6 +38,39 @@ class AuthController extends Controller
 
         return $this->respondWithToken($token); # If all credentials are correct - we are going to generate a new access token and send it back on response
     }
+
+    public function register(Request $request)
+    {
+
+        $data = [
+            'name' => $request->input('name'),
+            'email' => $request->input('email'),
+            'password' => $request->input('password'),
+            // Assuming you have other fields like 'email_verified_at', 'remember_token', etc.
+        ];
+        
+        $validator = Validator::make($data, [
+            // No specific validation for fake names
+            'name' => 'required|string|min:5', 
+            'email' => [
+
+                
+                'required',
+                'email',
+                Rule::unique('users', 'email'), // Assuming you're updating a user and need to ignore the user's current email
+            ],
+            'password' => 'required|string|min:8', // You might want to enforce a minimum length for passwords
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(["errors"=>$validator->errors()], 422);
+        }
+            $user = User::create($request->all());
+            return response()->json([
+                'message' =>'User register successfully',
+                 'data'=>  $user
+                ],200);
+         }
 
     /**
      * Get the authenticated User.
