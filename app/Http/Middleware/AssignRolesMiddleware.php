@@ -24,3 +24,12 @@ class AssignRolesMiddleware
         return $next($request);
     }
 }
+
+// Adding permissions to a user
+// $user->givePermissionTo('edit articles');
+
+// Adding permissions via a role
+// $user->assignRole('writer');
+
+// $role->givePermissionTo('edit articles');
+//$user->can('edit articles');

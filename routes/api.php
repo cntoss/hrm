@@ -13,10 +13,10 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\UserRoleController;
 
 Route::group([
-    'middleware' => 'api',
     'prefix' => 'auth'
 ], function ($router) {
     Route::post('login', [AuthController::class, 'login']);
@@ -27,18 +27,27 @@ Route::group([
     Route::get('users', [AuthController::class, 'index']);
 });
 
-Route::middleware(['auth:api','assign.roles' ])->group(
+Route::middleware(['auth:sanctum', 'assign.roles'])->group(
     function () {
-    Route::get('/employees', [EmployeeController::class, 'index']);
-    Route::post('/employees', [EmployeeController::class, 'store']);
-    Route::get('/employees/{id}', [EmployeeController::class, 'show']);
-    Route::put('/employees/{id}', [EmployeeController::class, 'update']);
-    Route::delete('/employees/{id}', [EmployeeController::class, 'destroy']);
-});
+        Route::get('/employees', [EmployeeController::class, 'index']);
+        Route::post('/employees', [EmployeeController::class, 'store']);
+        Route::get('/employees/{id}', [EmployeeController::class, 'show']);
+        Route::put('/employees/{id}', [EmployeeController::class, 'update']);
+        Route::delete('/employees/{id}', [EmployeeController::class, 'destroy']);
+    }
+);
 
 Route::group(
-    ['prefix'=>'role',  'middleware' => 'api',], function () {
-    Route::get('/role', [UserRoleController::class, 'getRoles']);
-    Route::post('/assignRole', [UserRoleController::class, 'assignRole']);
-    Route::get('/permission', [UserRoleController::class, 'getPermissions']);
-   });
+    ['prefix' => 'role', 'middleware' => 'api',],
+    function () {
+        Route::get('/role', [UserRoleController::class, 'getRoles']);
+        Route::post('/assignRole', [UserRoleController::class, 'assignRole']);
+        Route::get('/permission', [UserRoleController::class, 'getPermissions']);
+    }
+);
+
+Route::middleware('auth:sanctum')->group(
+    function () {
+        Route::resource('projects', ProjectController::class);
+    }
+);
