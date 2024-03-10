@@ -1,0 +1,1 @@
+Clear route => php artisan route:clear 

@@ -9,5 +9,5 @@ Initially it was on jwt [ref](https://github.com/cntoss/hrm/commit/8ef88d619ddec
 
 ## 2 [Sanctum](https://laravel.com/docs/10.x/sanctum)
 
-convert it with sanctum [ref](https://github.com/cntoss/hrm/commit/62cc5e8e65a4a762cc7ae1fd84ea661ddab35b18)
+convert it with sanctum [ref](https://github.com/cntoss/hrm/commit/62cc5e8e65a4a762cc7ae1fd84ea661ddab35b18) and implements role and permission
 

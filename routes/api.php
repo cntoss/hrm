@@ -13,7 +13,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EmployeeController;
-use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\ProjectController as ProjectController;
 use App\Http\Controllers\UserRoleController;
 
 Route::group([
@@ -38,7 +38,7 @@ Route::middleware(['auth:sanctum', 'assign.roles'])->group(
 );
 
 Route::group(
-    ['prefix' => 'role', 'middleware' => 'api',],
+    ['prefix' => 'role', 'middleware' => 'auth:sanctum',],
     function () {
         Route::get('/role', [UserRoleController::class, 'getRoles']);
         Route::post('/assignRole', [UserRoleController::class, 'assignRole']);
